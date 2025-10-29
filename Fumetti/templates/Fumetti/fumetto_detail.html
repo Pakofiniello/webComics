@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebComic - Fumetto</title>
+  <style>
+    /* === BASE STYLE === */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1d1f23;
+      color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #25282e;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .logo {
+      font-size: 1.5em;
+      font-weight: 600;
+      color: #6fb4ff;
+      letter-spacing: 1px;
+    }
+
+    main {
+      padding: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      border-bottom: 2px solid #6fb4ff;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+
+    .comic-container {
+      background-color: #2a2d33;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .comic-header {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .comic-image {
+      width: 220px;
+      height: 320px;
+      background-color: #34383f;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #999;
+      font-style: italic;
+    }
+
+    .comic-info {
+      flex: 1;
+    }
+
+    .comic-info h3 {
+      margin: 0 0 10px 0;
+      color: #6fb4ff;
+    }
+
+    .card {
+      background-color: #2a2d33;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: background-color 0.2s;
+    }
+
+    .card:hover {
+      background-color: #34383f;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">WebComic</div>
+  </header>
+
+  <main>
+    <section id="fumetto">
+      <h2>Dettagli Fumetto</h2>
+      
+      <div class="comic-container">
+        <div class="comic-header">
+          <div class="comic-image">
+            Immagine copertina
+          </div>
+          <div class="comic-info">
+            <h3>Titolo del Fumetto</h3>
+            <p><strong>Autore:</strong> Nome dell’autore</p>
+            <p><strong>Genere:</strong> Azione, Avventura</p>
+            <p><strong>Descrizione:</strong> Breve descrizione del fumetto, trama o informazioni aggiuntive.</p>
+          </div>
+        </div>
+
+        <h3>Volumi</h3>
+        <div class="card">
+          <strong>Volume 1:</strong> Il principio della leggenda
+        </div>
+        <div class="card">
+          <strong>Volume 2:</strong> Il ritorno dell’eroe
+        </div>
+        <div class="card">
+          <strong>Volume 3:</strong> La battaglia finale
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

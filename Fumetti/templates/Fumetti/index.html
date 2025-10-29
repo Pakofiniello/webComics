@@ -118,7 +118,7 @@
       {%for fumetto in top_mangas%}
       <div class = "card">
         <strong>
-        {{fumetto}}
+      <a href="{% url 'fumetto_detail' fumetto.id %}">{{ fumetto.titolo }}</a>
       </strong>
       </div>
       {%endfor%}
@@ -130,7 +130,7 @@
       {% for capitolo in last_chapters%}
       <div class = "card">
         <strong>
-            {{capitolo.titolo_capitolo}}
+            #{{capitolo.numero_capitolo}} {{capitolo.titolo_capitolo}}
         </strong> - {{capitolo.fumetto.titolo}}
       </div>
       {%endfor%}
