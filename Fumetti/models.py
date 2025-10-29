@@ -17,6 +17,12 @@ class Manga(models.Model):
     def __str__(self):
         return self.titolo
     
+class Volume(models.Model):
+    fumetto = models.ForeignKey(Manga, null = False)
+    numero = models.IntegerField()
+
+    def __str__(self):
+        return self.fumetto + "#" + self.numero
 
 class Chapter(models.Model):
     titolo_capitolo = models.TextField(max_length=40)
