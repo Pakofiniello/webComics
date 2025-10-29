@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebComic</title>
+  <style>
+    /* === BASE STYLE === */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1d1f23;
+      color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #25282e;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .logo {
+      font-size: 1.5em;
+      font-weight: 600;
+      color: #6fb4ff;
+      letter-spacing: 1px;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    nav button {
+      background-color: transparent;
+      color: #f2f2f2;
+      border: none;
+      padding: 8px 16px;
+      font-size: 1em;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background-color 0.2s;
+    }
+
+    nav button:hover {
+      background-color: #34383f;
+    }
+
+    main {
+      padding: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    section {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      border-bottom: 2px solid #6fb4ff;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background-color: #2a2d33;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .card:hover {
+      background-color: #34383f;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">WebComic</div>
+    <nav>
+      <button onclick="showSection('artisti')">Visualizza artisti</button>
+      <button onclick="showSection('fumetti')">Visualizza fumetti</button>
+      <button onclick="showSection('capitoli')">Visualizza ultimi capitoli</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Sezione ARTISTI -->
+    <section id="artisti" class="active">
+      <h2>Artisti</h2>
+        {% for artista in popular_artists%}
+        <div class = "card">
+            <strong>
+            {{ artista }}
+            </strong>
+        </div>
+        {%endfor%}
+    </section>
+
+    <!-- Sezione FUMETTI -->
+    <section id="fumetti">
+      <h2>Fumetti</h2>
+      {%for fumetto in top_mangas%}
+      <div class = "card">
+        <strong>
+        {{fumetto}}
+      </strong>
+      </div>
+      {%endfor%}
+    </section>
+
+    <!-- Sezione CAPITOLI -->
+    <section id="capitoli">
+      <h2>Ultimi capitoli</h2>
+      {% for capitolo in last_chapters%}
+      <div class = "card">
+        <strong>
+            {{capitolo.titolo_capitolo}}
+        </strong> - {{capitolo.fumetto.titolo}}
+      </div>
+      {%endfor%}
+    </section>
+  </main>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+  </script>
+</body>
+</html>
