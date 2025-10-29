@@ -17,7 +17,7 @@ def index(request):
 def fumetto_detail(request, fumetto_id):
     fumetto = get_object_or_404(Manga, id = fumetto_id)
     template = loader.get_template("Fumetti/fumetto_detail.html")
-    context = {"":""}
+    context = {"fumetto":fumetto}
     return HttpResponse(template.render(context,request))
     
     
