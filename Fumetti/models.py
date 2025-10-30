@@ -1,20 +1,27 @@
 from django.db import models
 from datetime import date, timezone, timedelta
-
-
-def token_expire_default():
-    return timezone.now() + timedelta(days=1)
-
-# def user_token_generate():
+from .token_auth import token_auth
 
 class user(models.Model):
     username = models.CharField(max_length=20, null = False)
     password = models.TextField(max_length=30, null = False)
     email = models.EmailField(null = False)
     role = models.CharField(max_length=10, default="standard")
-    auth_token = models.TextField(null=True)
-    auth_token_expire = models.DateTimeField(default=token_expire_default)
+    auth_token = models.TextField(null=False)
+    auth_token_expire = models.DateTimeField()
 
+    def is_token_valid(self):
+        """True se token è valido (Dovrebbe)"""
+        return self.auth_token and self.auth_token_expire and self.auth_token_expire > timezone.now()
+    
+    def save(self, *args, **kwargs):
+        if not self.is_token_valid():
+            tkn = token_auth()
+            tkn.token_setter()
+            self.auth_token = tkn.token_hex_getter()
+            self.auth_token_expire = tkn.token_exp_getter()
+        super().save(*args,**kwargs)
+            
 
 
 class Tab_Generi(models.Model):
