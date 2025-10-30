@@ -1,0 +1,15 @@
+{% extends 'Fumetti/base.html' %}
+
+{% block title %}{{ block_title }} - WebComic{% endblock %}
+
+{% block content %}
+<h2>Login</h2>
+<form method="POST" action="{% url 'login' %}">
+    {% csrf_token %}
+    {{ login_form.as_p }}
+    <input type="submit" value="Accedi">
+</form>
+
+<hr>
+
+{% endblock %}

@@ -1,6 +1,22 @@
 from django.db import models
+from datetime import date, timezone, timedelta
 
-    
+
+def token_expire_default():
+    return timezone.now() + timedelta(days=1)
+
+# def user_token_generate():
+
+class user(models.Model):
+    username = models.CharField(max_length=20, null = False)
+    password = models.TextField(max_length=30, null = False)
+    email = models.EmailField(null = False)
+    role = models.CharField(max_length=10, default="standard")
+    auth_token = models.TextField(null=True)
+    auth_token_expire = models.DateTimeField(default=token_expire_default)
+
+
+
 class Tab_Generi(models.Model):
     nome_genere = models.CharField(max_length=20, unique=True)
 
@@ -30,13 +46,12 @@ class Volume(models.Model):
     numero = models.IntegerField()
 
     def __str__(self):
-        return self.fumetto + "#" + self.numero
+        return f"#{self.numero} - {self.fumetto} "
 
 class Chapter(models.Model):
-    numero_capitolo = models.IntegerField(blank = True)
     titolo_capitolo = models.TextField(max_length=40)
-    fumetto = models.ForeignKey(Manga, on_delete=models.CASCADE)
     numero_pagine_capitolo = models.IntegerField()
-
+    data_pubblicazione_capitolo = models.DateField(default=date.today)
+    volume = models.ForeignKey(Volume, on_delete=models.CASCADE, null=True, default=None)
     def __str__(self):
-        return  self.titolo_capitolo + " - " + self.fumetto.__str__()
+        return  self.titolo_capitolo + " - " + self.volume.__str__()
