@@ -17,6 +17,7 @@
         padding:25px;
         box-shadow: 0 5px 20px rgba(0,0,0,0.5);">
 
+    <!-- ==================== INFO FUMETTO ==================== -->
     <div style="display:flex; gap:25px; flex-wrap:wrap;">
       <div class="comic-image" style="flex:0 0 300px; height:450px; border-radius:10px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,0.5);">
         {% if fumetto.img_url %}
@@ -27,6 +28,7 @@
           </div>
         {% endif %}
       </div>
+
       <div class="comic-info" style="flex:1; display:flex; flex-direction:column; justify-content:flex-start; gap:15px;">
         <h1 style="color:#6fb4ff; margin:0;">{{ fumetto.titolo }}</h1>
         <p><strong>Autore:</strong> {{ fumetto.artista }}</p>
@@ -35,16 +37,54 @@
       </div>
     </div>
 
+    <!-- ==================== VALUTAZIONE ==================== -->
+    <div class="rating-card" style="
+          background:#2a2d33;
+          border-radius:10px;
+          padding:20px;
+          text-align:center;
+          color:#f2f2f2;
+          margin-top:20px;
+          box-shadow:0 2px 10px rgba(0,0,0,0.3);">
+
+      <h2 style="color:#6fb4ff; margin-bottom:15px;">Valuta questo fumetto</h2>
+      <div style="margin-bottom:10px;">Valutazione attuale: {{ media_attuale|floatformat:1 }} ⭐</div>
+
+      <!-- Form POST verso la stessa view -->
+      <form method="POST" action="{{ request.path }}" style="display:flex; flex-direction:column; align-items:center; gap:15px;">
+        {% csrf_token %}
+        <div class="star-rating" style="display:flex; gap:10px; font-size:2rem; cursor:pointer;">
+          {% for i in "12345" %}
+            <input type="radio" id="star{{ forloop.counter }}" name="rating" value="{{ forloop.counter }}" style="display:none;">
+            <label for="star{{ forloop.counter }}" class="star" style="color:#ccc;">&#9733;</label>
+          {% endfor %}
+        </div>
+
+        <button type="submit" style="
+              background-color:#6fb4ff;
+              color:#1f2126;
+              border:none;
+              border-radius:8px;
+              padding:10px 20px;
+              cursor:pointer;
+              font-weight:bold;
+              transition:0.3s;">
+          Invia valutazione
+        </button>
+      </form>
+    </div>
+
+    <!-- ==================== VOLUMI ==================== -->
     {% for volume in fumetto.volume_set.all %}
       <div class="volume" style="background:#2a2d33; border-radius:10px; padding:15px;">
         <h2 style="color:#6fb4ff; margin-top:0; border-bottom:2px solid #6fb4ff; padding-bottom:5px;">Volume {{ volume.numero }}</h2>
         {% if volume.chapter_set.all %}
           <ul style="margin-top:10px; padding-left:20px;">
-          {% for capitolo in volume.chapter_set.all %}
-            <li style="margin-bottom:8px; color:#f2f2f2;">
-              <strong>{{ capitolo.titolo_capitolo }}</strong> - {{ capitolo.numero_pagine_capitolo }} pagine
-            </li>
-          {% endfor %}
+            {% for capitolo in volume.chapter_set.all %}
+              <li style="margin-bottom:8px; color:#f2f2f2;">
+                <strong>{{ capitolo.titolo_capitolo }}</strong> - {{ capitolo.numero_pagine_capitolo }} pagine
+              </li>
+            {% endfor %}
           </ul>
         {% else %}
           <p>Nessun capitolo disponibile per questo volume.</p>
@@ -56,4 +96,33 @@
 
   </div>
 </section>
+
+<!-- ==================== SCRIPT STELLE ==================== -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const stars = document.querySelectorAll(".star-rating .star");
+  const inputs = document.querySelectorAll(".star-rating input");
+
+  function highlightStars(value) {
+    stars.forEach((star, i) => {
+      star.style.color = (i < value) ? "#ffd700" : "#ccc";
+    });
+  }
+
+  stars.forEach((label, index) => {
+    label.addEventListener("mouseover", () => highlightStars(index + 1));
+    label.addEventListener("mouseout", () => {
+      const checked = document.querySelector(".star-rating input:checked");
+      highlightStars(checked ? checked.value : 0);
+    });
+    label.addEventListener("click", () => {
+      inputs[index].checked = true;
+    });
+  });
+
+  // Evidenzia eventuale valutazione pre-selezionata
+  const checkedInput = document.querySelector(".star-rating input:checked");
+  if (checkedInput) highlightStars(checkedInput.value);
+});
+</script>
 {% endblock %}
