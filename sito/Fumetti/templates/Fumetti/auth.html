@@ -1,0 +1,30 @@
+{% extends 'Fumetti/base.html' %}
+
+{% block title %}
+    {% if mode == 'login' %}
+        Login - WebComic
+    {% else %}
+        Registrazione - WebComic
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<h2>
+    {% if mode == 'login' %}
+        Login
+    {% else %}
+        Registrazione
+    {% endif %}
+</h2>
+
+<form method="POST" action="{% if mode == 'login' %}{% url 'login_view' %}{% else %}{% url 'register_view' %}{% endif %}">
+    {% csrf_token %}
+    {% if mode == 'login' %}
+        {{ login_form.as_p }}
+    {% else %}
+        {{ register_form.as_p }}
+    {% endif %}
+    <input type="submit" value="{% if mode == 'login' %}Accedi{% else %}Registrati{% endif %}">
+</form>
+<hr>
+{% endblock %}
