@@ -25,6 +25,7 @@ class Manga(models.Model):
     def __str__(self):
         return self.titolo
     
+    
 class Volume(models.Model):
     fumetto = models.ForeignKey(Manga, null = False, on_delete=models.CASCADE)
     numero = models.IntegerField()
@@ -39,3 +40,18 @@ class Chapter(models.Model):
     volume = models.ForeignKey(Volume, on_delete=models.CASCADE, null=True, default=None)
     def __str__(self):
         return  self.titolo_capitolo + " - " + self.volume.__str__()
+
+class tab_valutazioni(models.Model):
+    manga_riferimento = models.ForeignKey(Manga, on_delete=models.CASCADE)
+    insert = models.IntegerField(default=0)          # numero di recensioni
+    somma_stelle = models.IntegerField(default=0)    # somma totale delle stelle
+    media = models.FloatField(default=0.0)           # media = somma_stelle / insert
+
+    def aggiorna_media(self, nuove_stelle):
+        """
+        Aggiorna il conteggio e la somma con una nuova valutazione
+        """
+        self.insert += 1
+        self.somma_stelle += nuove_stelle
+        self.media = self.somma_stelle / self.insert
+        self.save()

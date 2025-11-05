@@ -1,6 +1,6 @@
 # admin.py
 from django.contrib import admin
-from .models import Artist, Manga, Chapter, Volume, Tab_Generi
+from .models import Artist, Manga, Chapter, Volume, Tab_Generi, tab_valutazioni
 from django.contrib.auth.models import User
 
 
@@ -98,3 +98,5 @@ class ChapterAdmin(admin.ModelAdmin):
             'fields': ('numero_pagine_capitolo', 'data_pubblicazione_capitolo'),
         }),
     )
+
+admin.site.register(tab_valutazioni)

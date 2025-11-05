@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.template import loader
-from .models import Manga, Chapter, Artist
+from .models import Manga, Chapter, Artist, tab_valutazioni
 from django.shortcuts import get_object_or_404, redirect
 from .forms import LoginForm, register_form
 from rest_framework import serializers 
@@ -17,11 +17,46 @@ def index(request):
                'popular_artists' : popular_artists}
     return HttpResponse(template.render(context,request))
 
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+from .models import Manga, tab_valutazioni
+from django.template import loader
+
 def fumetto_detail(request, fumetto_id):
-    fumetto = get_object_or_404(Manga, id = fumetto_id)
+
+    fumetto = get_object_or_404(Manga, id=fumetto_id)
+    if request.method == "POST":
+        stelle = request.POST.get("rating")
+        if stelle and stelle.isdigit() and 1 <= int(stelle) <= 5:
+            stelle = int(stelle)
+            valutazione = tab_valutazioni.objects.filter(manga_riferimento=fumetto).first()
+            if valutazione:
+                valutazione.insert += 1
+                valutazione.somma_stelle += stelle
+                valutazione.media = valutazione.somma_stelle / valutazione.insert
+                valutazione.save()
+            else:
+                tab_valutazioni.objects.create(
+                    manga_riferimento=fumetto,
+                    insert=1,
+                    somma_stelle=stelle,
+                    media=stelle
+                )
+
+        from django.shortcuts import redirect
+        return redirect(request.path)
+
+    valutazione = tab_valutazioni.objects.filter(manga_riferimento=fumetto).first()
+    media_attuale = valutazione.media if valutazione else 0
+
     template = loader.get_template("Fumetti/fumetto_detail.html")
-    context = {"fumetto":fumetto}
-    return HttpResponse(template.render(context,request))
+    context = {
+        "fumetto": fumetto,
+        "valutazione_attuale": valutazione,
+        "media_attuale": media_attuale
+    }
+    return HttpResponse(template.render(context, request))
+
 
 def login_view(request):
 
@@ -37,9 +72,7 @@ def login_view(request):
 
 
 
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from .forms import register_form
+
 
 def register_view(request):
     if request.method == "POST":
@@ -57,3 +90,6 @@ def register_view(request):
         'mode': 'register'
     }
     return render(request, "Fumetti/auth.html", context)
+
+
+
