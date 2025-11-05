@@ -43,14 +43,11 @@ class Chapter(models.Model):
 
 class tab_valutazioni(models.Model):
     manga_riferimento = models.ForeignKey(Manga, on_delete=models.CASCADE)
-    insert = models.IntegerField(default=0)          # numero di recensioni
-    somma_stelle = models.IntegerField(default=0)    # somma totale delle stelle
-    media = models.FloatField(default=0.0)           # media = somma_stelle / insert
+    insert = models.IntegerField(default=0)       
+    somma_stelle = models.IntegerField(default=0)   
+    media = models.FloatField(default=0.0)          
 
     def aggiorna_media(self, nuove_stelle):
-        """
-        Aggiorna il conteggio e la somma con una nuova valutazione
-        """
         self.insert += 1
         self.somma_stelle += nuove_stelle
         self.media = self.somma_stelle / self.insert
