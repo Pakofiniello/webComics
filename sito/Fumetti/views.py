@@ -17,10 +17,6 @@ def index(request):
                'popular_artists' : popular_artists}
     return HttpResponse(template.render(context,request))
 
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
-from .models import Manga, tab_valutazioni
-from django.template import loader
 
 def fumetto_detail(request, fumetto_id):
 
@@ -43,7 +39,6 @@ def fumetto_detail(request, fumetto_id):
                     media=stelle
                 )
 
-        from django.shortcuts import redirect
         return redirect(request.path)
 
     valutazione = tab_valutazioni.objects.filter(manga_riferimento=fumetto).first()
