@@ -19,9 +19,16 @@
 
     <!-- ==================== INFO FUMETTO ==================== -->
     <div style="display:flex; gap:25px; flex-wrap:wrap;">
-      <div class="comic-image" style="flex:0 0 300px; height:450px; border-radius:10px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,0.5);">
+      <div class="comic-image" style="flex:0 0 300px; height:450px; border-radius:10px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,0.5); position:relative;">
         {% if fumetto.img_url %}
           <img src="{{ fumetto.img_url }}" alt="{{ fumetto.titolo }}" style="width:100%; height:100%; object-fit:cover;">
+
+          <!-- Cerchietto V -->
+          <form method="POST" action="{% url 'manga_completato' fumetto.id %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="segna-letto-btn">V</button>
+          </form>
+
         {% else %}
           <div style="width:100%; height:100%; background:#444; display:flex; align-items:center; justify-content:center; color:#999;">
             Immagine non disponibile
@@ -97,6 +104,41 @@
   </div>
 </section>
 
+<!-- ==================== STILI CERCHIETTO V ==================== -->
+<style>
+.segna-letto-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background-color: #6fb4ff;
+    color: #1f2126;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Hover: diventa verde */
+.segna-letto-btn:hover {
+    background-color: #4caf50;
+    color: white;
+    transform: scale(1.2);
+}
+
+/* Click: piccolo effetto “pop” */
+.segna-letto-btn:active {
+    transform: scale(0.9);
+}
+</style>
+
 <!-- ==================== SCRIPT STELLE ==================== -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -120,9 +162,9 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 
-  // Evidenzia eventuale valutazione pre-selezionata
   const checkedInput = document.querySelector(".star-rating input:checked");
   if (checkedInput) highlightStars(checkedInput.value);
 });
+
 </script>
 {% endblock %}

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profilo - WebComic</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1d1f23;
+      color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #25282e;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .logo {
+      font-size: 1.5em;
+      font-weight: 600;
+      color: #6fb4ff;
+      letter-spacing: 1px;
+      text-decoration: none;
+    }
+
+    .nav-links a {
+      color: #f2f2f2;
+      margin-left: 20px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: #6fb4ff;
+    }
+
+    main {
+      padding: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .profile-card {
+      background-color: #25282e;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: #1d1f23;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+      color: #6fb4ff;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid #3a3d44;
+      margin: 25px 0;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+    }
+
+    h1 { text-align: center; color: #6fb4ff; margin-bottom: 20px; }
+    h3 { color: #6fb4ff; margin-bottom: 10px; }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 10px;
+    }
+
+    li {
+      background-color: #1d1f23;
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    p { color: #bfbfbf; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="logo">WebComic</a>
+    <nav class="nav-links">
+      <a href="profile.html">Profilo</a>
+      <a href="login.html">Logout</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="profile-card">
+      <h1>Profilo Utente</h1>
+
+      <div class="profile-header">
+        <div class="avatar">A</div>
+        <div>
+          <h2>Nome Utente</h2>
+          <p>email@example.com</p>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="watchlist">
+        <h3>📘 Manga in Watchlist</h3>
+        <ul>
+          <li>Titolo Manga 1 — Autore 1</li>
+          <li>Titolo Manga 2 — Autore 2</li>
+          <li>Titolo Manga 3 — Autore 3</li>
+        </ul>
+      </div>
+
+      <div class="read-list" style="margin-top:30px;">
+        <h3>📗 Manga letti</h3>
+        <ul id="completed_manga">
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const currentPath = window.location.pathname + "/profilo_api/";
+    
+    fetch(currentPath, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      })
+    .then(response => response.json())
+    .then(result => {
+
+      const mangaContainer = document.getElementById('completed_manga');
+      
+      result.manga_completati.forEach(manga => {
+        const li = document.createElement('li');
+        li.textContent = manga.titolo
+        mangaContainer.appendChild(li)
+      });
+    })
+  
+  
+  </script>
+</body>
+</html>

@@ -4,3 +4,6 @@ from django.apps import AppConfig
 class FumettiConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'Fumetti'
+
+    def ready(self):
+        import Fumetti.signals 

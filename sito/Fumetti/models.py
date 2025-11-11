@@ -1,5 +1,13 @@
 from django.db import models
 from datetime import date, timezone, timedelta
+from django.contrib.auth.models import User
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    manga_letti = models.JSONField(default = dict, blank = True)
+    manga_watchlist = models.JSONField(default=list, blank = True)
+
 
 class Tab_Generi(models.Model):
     nome_genere = models.CharField(max_length=20, unique=True)

@@ -53,11 +53,11 @@
     <a href="{% url 'index' %}" class="logo">WebComic</a>
     <nav class="nav-links">
       {% if user.is_authenticated %}
-        <a href="/Fumetti/login/">Profilo</a>
-        <a href="">Logout</a>   
+        <a href="{% url 'profile_page_view' user.id %}">Profilo</a>
+        <a href="{% url 'logout_view' %}">Logout</a>
       {% else %}
-        <a href="/Fumetti/login/">Login</a>
-        <a href="/Fumetti/register/">Registrati</a>
+        <a href="{% url 'login_view' %}">Login</a>
+        <a href="{% url 'register_view' %}">Registrati</a>
       {% endif %}
     </nav>
   </header>
